@@ -21,23 +21,46 @@ add_library(core STATIC ${CORE_SOURCES})
 target_include_directories(core PUBLIC ${CORE_DIR}/include)
 target_compile_options(core PRIVATE -Wall -Wextra)
 
+# --- Yardımcı kütüphaneler (sadece PC) ---
+add_library(signals STATIC signals.c)          # 3.8 yapay sinyal üreteci
+target_link_libraries(signals PUBLIC core m)
+target_compile_options(signals PRIVATE -Wall -Wextra)
+
+add_library(replay_lib STATIC replay.c)        # 3.9 kayıt oynatıcı
+target_link_libraries(replay_lib PUBLIC core)
+target_compile_options(replay_lib PRIVATE -Wall -Wextra)
+
 # --- Testler ---
 enable_testing()
 
-# Yeni bir test eklemek için: pd_add_test(test_xxx)
+# Yeni bir test eklemek için: pd_add_test(test_xxx [ek kütüphaneler...])
 function(pd_add_test name)
-    add_executable(${name} ${name}.c ${ARGN})
-    target_link_libraries(${name} PRIVATE core unity)
+    add_executable(${name} ${name}.c)
+    target_link_libraries(${name} PRIVATE core unity ${ARGN})
     target_compile_options(${name} PRIVATE -Wall -Wextra)
     add_test(NAME ${name} COMMAND ${name})
 endfunction()
 
 pd_add_test(test_sanity)
-pd_add_test(test_frame_codec)
 pd_add_test(test_crc16)
+pd_add_test(test_frame_codec)
 pd_add_test(test_imu_convert)
 pd_add_test(test_sensitivity)
 pd_add_test(test_gravity_filter)
 pd_add_test(test_gesture_classifier)
-pd_add_test(test_gesture_detector signals.c)
-target_link_libraries(test_gesture_detector PRIVATE m)
+pd_add_test(test_gesture_detector signals)
+pd_add_test(test_replay replay_lib signals)
+
+# --- Komut satırı programları ---
+add_executable(replay replay_main.c)            # replay <csv> [--sens] [--all] [-o]
+target_link_libraries(replay PRIVATE replay_lib)
+
+add_executable(gen_signals gen_signals.c)       # gen_signals <cikti.csv>
+target_link_libraries(gen_signals PRIVATE signals)
+
+# Uçtan uca: gen_signals -> replay (komut satırı programları gerçekten çalışıyor mu)
+add_test(NAME cli_gen_signals COMMAND gen_signals demo.csv)
+add_test(NAME cli_replay COMMAND replay demo.csv)
+set_tests_properties(cli_replay PROPERTIES
+    DEPENDS cli_gen_signals
+    PASS_REGULAR_EXPRESSION "1[0-9][0-9][0-9],WEB.*3[0-9][0-9][0-9],ICE.*5[0-9][0-9][0-9],FIRE")

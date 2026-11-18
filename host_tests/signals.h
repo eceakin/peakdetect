@@ -21,6 +21,7 @@
 #define SIGNALS_H
 
 #include <stdint.h>
+#include <stdio.h>
 
 #include "pd_types.h"
 
@@ -56,5 +57,12 @@ void sig_normal_motion(signals_t *s, int start, int len);
 
 /* Yerçekimini ekler, gürültüyü ekler, LSB'ye çevirir, int16'ya kırpar, belleği bırakır */
 void sig_end(signals_t *s);
+
+/*
+ * Ham örnekleri decode.py ile aynı CSV biçiminde yazar:
+ *     seq,flags,ax,ay,az,gx,gy,gz
+ * flags NULL ise hepsi 0 (yoksa örnek başına flags byte'ı, ör. buton işareti bit 2).
+ */
+void sig_write_csv(const imu_raw_t *buf, int n, const uint8_t *flags, FILE *fp);
 
 #endif /* SIGNALS_H */
