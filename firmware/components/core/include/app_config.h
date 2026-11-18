@@ -65,6 +65,7 @@
 #define PD_TH_FIRE_A_MIN 1500 /* mg, 1.5 g */
 #define PD_TH_DOMINANCE_X10 15 /* 1.5 kat baskınlık */
 #define PD_REARM_PCT 70        /* cooldown sonrası sinyal tetik eşiğinin %70'inin altına inmeden ARMED olmaz */
+#define PD_AMBIGUITY_GAP_PCT 20 /* iki kural birden geçerse: margin farkı >= bu ise büyük olan kazanır, değilse AMBIGUOUS */
 
 /* Hassasiyet çarpanları, yüzde */
 #define PD_SENS_LOW_PCT 130
