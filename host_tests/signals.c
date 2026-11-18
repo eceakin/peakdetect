@@ -144,3 +144,13 @@ void sig_end(signals_t *s)
     free(s->gz);
     s->ax = s->ay = s->az = s->gx = s->gy = s->gz = NULL;
 }
+
+void sig_write_csv(const imu_raw_t *buf, int n, const uint8_t *flags, FILE *fp)
+{
+    fprintf(fp, "seq,flags,ax,ay,az,gx,gy,gz\n");
+    for (int i = 0; i < n; i++) {
+        fprintf(fp, "%d,%d,%d,%d,%d,%d,%d,%d\n", i & 0xFF, flags ? flags[i] : 0,
+                buf[i].accel[0], buf[i].accel[1], buf[i].accel[2], buf[i].gyro[0],
+                buf[i].gyro[1], buf[i].gyro[2]);
+    }
+}
