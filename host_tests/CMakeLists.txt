@@ -33,3 +33,4 @@ function(pd_add_test name)
 endfunction()
 
 pd_add_test(test_sanity)
+pd_add_test(test_crc16)
