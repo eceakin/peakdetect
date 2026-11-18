@@ -1,0 +1,16 @@
+menu "PeakDetect"
+
+    config PD_LOG_MODE_ENABLE
+        bool "Raw-data log mode (development)"
+        default y
+        help
+            Butona basili acilista ham IMU cercevelerini UART'tan gonderen
+            log modunu derlemeye dahil eder.
+
+    config PD_WIFI_ENABLE
+        bool "Wi-Fi game link (optional, Adim 10)"
+        default n
+        help
+            Wi-Fi/UDP oyun baglantisini derlemeye dahil eder.
+
+endmenu
