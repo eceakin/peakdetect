@@ -1,0 +1,6 @@
+build/
+build_host/
+sdkconfig.old
+__pycache__/
+*.pyc
+data/raw/
