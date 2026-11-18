@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "sdkconfig"
+#include "sdkconfig.h"
 
 void app_main(void)
 {
