@@ -59,7 +59,7 @@ add_executable(gen_signals gen_signals.c)       # gen_signals <cikti.csv>
 target_link_libraries(gen_signals PRIVATE signals)
 
 # Uçtan uca: gen_signals -> replay (komut satırı programları gerçekten çalışıyor mu)
-add_test(NAME cli_gen_signals COMMAND gen_signals demo.csv)
+add_test(NAME cli_gen_signals COMMAND gen_signals demo.csv demo.bin)
 add_test(NAME cli_replay COMMAND replay demo.csv)
 set_tests_properties(cli_replay PROPERTIES
     DEPENDS cli_gen_signals
