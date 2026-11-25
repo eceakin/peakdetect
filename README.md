@@ -83,3 +83,4 @@ seferlerde son iki komut yeterlidir.
 - `main` dalı her zaman derlenir ve testleri geçer; her modül için ayrı dal açın.
 - Eşikler, süreler ve pin numaraları kodun içine yazılmaz: `app_config.h` / `board_pins.h`.
 - Kartlı her testin kanıtı tarihle `docs/test_records/` altına konur.
+python -m unittest discover tools/tests -v
